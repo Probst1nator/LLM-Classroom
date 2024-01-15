@@ -18,7 +18,7 @@ jobs:
         restore-keys: Library-
 
     - name: Setup Unity Editor
-      uses: game-ci/unity-setup@v2
+      uses: game-ci/unity-builder@v2 # Updated to use the correct action
       with:
         unityVersion: '2020.3.10f1' # Specify your Unity version
         projectPath: '.' # Or path to your project within the repo if it's not the root
