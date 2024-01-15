@@ -1,0 +1,36 @@
+name: Unity Project Build and Execution
+
+on: [push]
+
+jobs:
+  build-and-run:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Cache Unity Library
+      uses: actions/cache@v2
+      with:
+        path: Library
+        key: Library-${{ hashFiles('**/ProjectSettings/ProjectVersion.txt') }}
+        restore-keys: Library-
+
+    - name: Setup Unity Editor
+      uses: game-ci/unity-setup@v2
+      with:
+        unityVersion: '2020.3.10f1' # Specify your Unity version
+        projectPath: '.' # Or path to your project within the repo if it's not the root
+
+    #- name: Build Unity Project
+     # run: |
+      #  # Add your Unity build command/script here
+       # # For example, Unity -batchmode -projectPath . -executeMethod MyEditorScript.BuildCommand -quit
+
+   # - name: Execute Built Game
+    #  run: |
+        # Replace with the path to your built game executable
+        # The following command assumes a Linux environment and that you've built a Linux executable
+     #   chmod +x ./Build/GameExecutableName
+      #  nohup ./Build/GameExecutableName -fullScreen &
