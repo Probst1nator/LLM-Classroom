@@ -20,7 +20,7 @@ jobs:
     - name: Build Unity Project
       uses: game-ci/unity-builder@v2
       with:
-        unityVersion: '2020.3.10f1' # Your Unity version
+        unityVersion: '2022.3.16f1' # Your Unity version
         targetPlatform: StandaloneWindows64 # Your build target
       env:
         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }} # Or UNITY_SERIAL for professional licenses
