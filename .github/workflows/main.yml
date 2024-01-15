@@ -17,16 +17,14 @@ jobs:
         key: Library-${{ hashFiles('**/ProjectSettings/ProjectVersion.txt') }}
         restore-keys: Library-
 
-    - name: Setup Unity Editor
-      uses: game-ci/unity-builder@v2 # Updated to use the correct action
+    - name: Build Unity Project
+      uses: game-ci/unity-builder@v2
       with:
-        unityVersion: '2020.3.10f1' # Specify your Unity version
-        projectPath: '.' # Or path to your project within the repo if it's not the root
+        unityVersion: '2020.3.10f1' # Your Unity version
+        targetPlatform: StandaloneWindows64 # Your build target
+      env:
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }} # Or UNITY_SERIAL for professional licenses
 
-    #- name: Build Unity Project
-     # run: |
-      #  # Add your Unity build command/script here
-       # # For example, Unity -batchmode -projectPath . -executeMethod MyEditorScript.BuildCommand -quit
 
    # - name: Execute Built Game
     #  run: |
