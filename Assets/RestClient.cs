@@ -2,26 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Networking;
+using static UnityEngine.GraphicsBuffer;
 
 public class RestClient : MonoBehaviour
 {
     public TMP_Text captionText; // Reference to the Text UI element
     public TMP_Text titleText; // Reference to the Text UI element
     string baseUrl = "http://localhost:5000";
-    SupportedScenes supportedScenes;
+
 
     void Start()
     {
         Application.runInBackground = true;
         Application.targetFrameRate = 30;
-        DeleteAllContentsInStreamingAssets();
+        //DeleteAllContentsInStreamingAssets();
 
-        supportedScenes = FindSupportedScenes();
-        StartCoroutine(SetSupportedScenes()); //Starts loop of setting scenes amd getting content with error cases built-in, will run forever
+        SetSupportedScenes(); //Starts loop of setting scenes amd getting content with error cases built-in, will run forever
+        StartCoroutine(GetAndRunEpisodes());
     }
     SupportedScenes FindSupportedScenes()
     {
@@ -62,73 +64,68 @@ public class RestClient : MonoBehaviour
         return scenes;
     }
 
-    IEnumerator SetSupportedScenes()
+    void SetSupportedScenes()
     {
+        SupportedScenes supportedScenes = FindSupportedScenes();
         string jsonPayload = JsonUtility.ToJson(supportedScenes);
-        using (UnityWebRequest webRequest = new UnityWebRequest(baseUrl + "/set_supported_scenes", "POST"))
-        {
-            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonPayload);
-            webRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
-            webRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            webRequest.SetRequestHeader("Content-Type", "application/json");
+        string path = Application.streamingAssetsPath + "/supported_scenes.json";
 
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-                yield return new WaitForSeconds(5); // Wait for 5 seconds before retrying
-                StartCoroutine(SetSupportedScenes());
-            }
-            else
-            {
-                Debug.Log("Response: " + webRequest.downloadHandler.text);
-                try
-                {
-                    StartCoroutine(GetAndRunEpisode());
-                }
-                catch (Exception e)
-                {
-                    Debug.Log(e);
-                    StartCoroutine(SetSupportedScenes());
-                }
-            }
-        }
-
+        File.WriteAllText(path, jsonPayload);
+        Debug.Log("Supported scenes saved to " + path);
     }
-    IEnumerator GetAndRunEpisode()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(baseUrl + "/get_episode_path"))
-        {
-            captionText.text = "...Generating";
-            titleText.text = "...";
-            yield return webRequest.SendWebRequest();
 
-            if (webRequest.result != UnityWebRequest.Result.Success)
+    IEnumerator GetAndRunEpisodes()
+    {
+        captionText.text = "...Generating";
+        titleText.text = "...";
+
+
+        yield return StartCoroutine(ChooseEpisodePath((chosenPath) =>
+        {
+            Debug.Log("Chosen Episode Path: " + chosenPath);
+             StartCoroutine(PlayEpisode(chosenPath));
+        }));
+    }
+    IEnumerator ChooseEpisodePath(Action<string> onEpisodeChosen)
+    {
+        string chosenPath = null;
+
+        while (string.IsNullOrEmpty(chosenPath))
+        {
+            string[] prioritizedPaths = GetDirectories("prioritized_episodes");
+            string[] unreleasedPaths = GetDirectories("unreleased_episodes");
+            string[] releasedPaths = GetDirectories("released_episodes");
+
+            // Try to pick from prioritized, else unreleased, else released
+            chosenPath = prioritizedPaths.FirstOrDefault() ?? unreleasedPaths.FirstOrDefault() ?? releasedPaths.FirstOrDefault();
+
+            chosenPath = chosenPath.Replace(@"\", "/");
+            if (string.IsNullOrEmpty(chosenPath))
             {
-                Debug.LogError("Error: " + webRequest.error);
+                Debug.LogWarning("No episodes found in any folder. Retrying in 5 seconds...");
+                captionText.text = "Waiting for episodes...";
+                titleText.text = "...";
+
+                // Wait for 5 seconds before retrying
                 yield return new WaitForSeconds(5);
             }
-            else
-            {
-                string response = webRequest.downloadHandler.text;
-                EpisodePathResponse episodeResponse = JsonUtility.FromJson<EpisodePathResponse>(response);
-
-                if (!string.IsNullOrEmpty(episodeResponse.episode_path))
-                {
-                    string episodePath = episodeResponse.episode_path;
-                    Debug.Log("Episode Path: " + episodePath);
-                    yield return StartCoroutine(PlayEpisode(episodePath));
-                    yield return GetAndRunEpisode();
-                }
-                else
-                {
-                    Debug.LogError("Invalid get_episode_path response: " + JsonUtility.ToJson(response));
-                    yield return new WaitForSeconds(5);
-                }
-            }
         }
-        StartCoroutine(SetSupportedScenes());
+
+        onEpisodeChosen?.Invoke(chosenPath);
+    }
+
+    string[] GetDirectories(string folderName)
+    {
+        string path = Application.streamingAssetsPath + "/" + folderName;
+        if (Directory.Exists(path))
+        {
+            return Directory.GetDirectories(path);
+        }
+        else
+        {
+            Debug.LogWarning($"Directory {path} does not exist.");
+            return new string[0];
+        }
     }
 
 
@@ -142,6 +139,7 @@ public class RestClient : MonoBehaviour
             Debug.LogError("File not found: " + jsonFilePath);
             return null;
         }
+
 
         try
         {
@@ -190,6 +188,13 @@ public class RestClient : MonoBehaviour
                 continue;
             }
             Debug.Log(JsonUtility.ToJson(action));
+
+            var charactersObjects = GameObject.Find("Characters");
+            foreach (var i_characterNavMeshAgent in charactersObjects.GetComponentsInChildren<NavMeshAgent>())
+            {
+                characterNavMeshAgent.transform.LookAt(characterObject.transform);
+            }
+
             if (action.looking_at != "" || action.walking_to != "")
             {
                 //StartCoroutine(LookAtTarget(characterObject, action.looking_at));
@@ -205,6 +210,7 @@ public class RestClient : MonoBehaviour
                 GameObject target = GameObject.Find(action.walking_to);
                 if (target != null)
                 {
+                    characterAnimator.SetBool("isIdling", false);
                     characterAnimator.SetBool("isWalking", true);
                     characterNavMeshAgent.SetDestination(target.transform.position);
                     // Optionally, check if the character has reached the destination in Update() or another coroutine
@@ -213,8 +219,11 @@ public class RestClient : MonoBehaviour
             }
             if (action.voice_line != "")
             {
-                characterAnimator.SetBool("isIdling", false);
-                characterAnimator.SetBool("isTalking", true);
+                if (!characterAnimator.GetBool("isWalking"))
+                {
+                    characterAnimator.SetBool("isIdling", false);
+                    characterAnimator.SetBool("isTalking", true);
+                }
                 captionText.text = action.character + ": " + action.voice_line;
 
                 string audioFilePath = $"{episodePath}/{action_i}_{action.character}.wav";
@@ -233,28 +242,17 @@ public class RestClient : MonoBehaviour
             characterAnimator.SetBool("isIdling", true);
             action_i++;
         }
-    }
-
-    IEnumerator LookAtTarget(GameObject targetObject, string targetName)
-    {
-        GameObject target = GameObject.Find(targetName);
-        if (target != null)
+        try
         {
-            while (true) // Or some condition to stop the rotation
-            {
-                Vector3 targetPosition = target.transform.position;
-                if (targetName.ToLower() == "camera")
-                {
-                    targetPosition.y -= 0.5f; // Adjust how much lower to look
-                }
-
-                Vector3 targetDirection = targetPosition - targetObject.transform.position;
-                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-                targetObject.transform.rotation = Quaternion.Slerp(targetObject.transform.rotation, targetRotation, 2.0f * Time.deltaTime);
-
-                yield return null; // Wait for the next frame
-            }
+            Directory.Move(episodePath, Application.streamingAssetsPath + "/released_episodes/" + Path.GetFileName(episodePath));
+            Directory.Move(episodePath + ".meta", Application.streamingAssetsPath + "/released_episodes/" + Path.GetFileName(episodePath) + ".meta");
         }
+        catch (Exception e)
+        {
+            Directory.Delete(episodePath, true);
+            Directory.Delete(episodePath + ".meta", true);
+        }
+        yield return StartCoroutine(GetAndRunEpisodes());
     }
 
 
@@ -290,7 +288,7 @@ public class RestClient : MonoBehaviour
 
     public static void DeleteAllContentsInStreamingAssets()
     {
-        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath);
+        string streamingAssetsPath = Application.streamingAssetsPath;
 
         // Check if the directory exists
         if (Directory.Exists(streamingAssetsPath))
