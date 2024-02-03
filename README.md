@@ -25,7 +25,7 @@ Contributions are what make the open-source community an amazing place to learn,
 Your support and donations help keep this educational tool accessible and continuously improving. For donation details, please see DONATIONS.md.
 
 ## Contact
-For collaboration, questions, or feedback, reach out to us at [Your Contact Information].
+For collaboration, questions, or feedback, reach out to me [here](https://github.com/Probst1nator).
 
 ## License
 Distributed under the GNU General Public License. See LICENSE.md for more information.
