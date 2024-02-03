@@ -25,7 +25,7 @@
 I welcome all forms of engagement, from GitHub stars to feedback and pull requests. Every interaction, question, or contribution is valuable and helps drive this project forward.
 
 ## Support and Donations
-Your support and donations help keep this educational tool accessible and continuously improving. For donation details, please see DONATIONS.md.
+This project incurs costs for livestream hosting and compute. If you find this project useful or interesting, please consider supporting it through donations.
 
 ## Contact
 For collaboration, questions, or feedback, reach out to me [here](https://github.com/Probst1nator).
