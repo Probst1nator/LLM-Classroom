@@ -22,7 +22,7 @@
 - No additional requirements as all necessary assets are included.
 
 ## How to Contribute
-Contributions are what make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. Check out our CONTRIBUTING.md for detailed instructions.
+I welcome all forms of engagement, from GitHub stars to feedback and pull requests. Every interaction, question, or contribution is valuable and helps drive this project forward.
 
 ## Support and Donations
 Your support and donations help keep this educational tool accessible and continuously improving. For donation details, please see DONATIONS.md.
