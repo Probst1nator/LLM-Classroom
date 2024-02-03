@@ -8,6 +8,9 @@
 - **Virtual Characters**: Characters engage in discussions, making learning fun and interactive.
 - **Dynamic Blackboard**: Displays generated diagrams, captions, and web-scraped images, enriching the educational experience.
 
+## YouTube Livestream
+Experience this project live! Check it out here: [24/7 Livestream on YouTube](https://www.youtube.com/channel/UCDc3yi2IjdiQ2VoVGDzeuqg). If the livestream is offline, you can explore my channel for previous livestreams saved as videos, showcasing the capabilities and potential of the project.
+
 ## Getting Started
 1. Clone the repository.
 2. Open the project in Unity.
