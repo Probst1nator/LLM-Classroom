@@ -9,7 +9,7 @@
 - **Dynamic Blackboard**: Displays generated diagrams, captions, and web-scraped images, enriching the educational experience.
 
 ## YouTube Livestream
-[Experience this project live!](https://www.youtube.com/channel/UCDc3yi2IjdiQ2VoVGDzeuqg) If the livestream is offline, you can explore my channel for previous livestreams saved as videos, showcasing the capabilities and potential of the project.
+[Experience this project live!](https://www.youtube.com/@SteffenProbst-qt5wq/streams) If the livestream is offline, you can explore [my channel](https://www.youtube.com/@SteffenProbst-qt5wq/streams) for previous livestreams saved as videos, showcasing the capabilities and potential of the project.
 
 ## Getting Started
 1. Clone the repository.
