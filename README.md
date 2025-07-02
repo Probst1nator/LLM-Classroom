@@ -6,12 +6,12 @@ Welcome to **LLM-Classroom**! This innovative project combines local large langu
 
 **Backend (Python)**: Uses local LLMs (Ollama) to generate synthetic classroom discussions, educational episodes, and interactive content. Features a REST API for seamless content distribution and live chat integration.
 
-**Frontend (Unity)**: A beautiful 3D virtual classroom environment where characters like Richard Feynman, Alan Watts, and student Alice engage in discussions, with dynamic blackboards displaying generated content and web-scraped images.
+**Frontend (Unity)**: A 3D virtual classroom environment where characters like Richard Feynman, Alan Watts, and student Alice engage in discussions, with dynamic blackboards displaying generated content and web-scraped images.
 
 ## 🎥 See It In Action
 
-[![Watch a classroom episode on YouTube](https://img.youtube.com/vi/0QkFQwB1p6A/0.jpg)](https://www.youtube.com/@SteffenProbst-qt5wq/streams)  
-👉 [Experience the project live on YouTube!](https://www.youtube.com/@SteffenProbst-qt5wq/streams)
+[![Watch a classroom episode on YouTube]](https://www.youtube.com/live/zoQ3bQ3zipM?si=qnBS8jE_P-GrGre9)  
+This project was created at the start of 2024, back then opensource language models were still much more basic. Be aware that because of this the dialogues in the (aged) episode will reflect this.
 
 ## 🚀 Quick Start
 
@@ -61,10 +61,6 @@ LLM-Classroom/
 ## 🤝 Contributing
 
 I welcome all forms of engagement! From GitHub stars to feedback and pull requests - every interaction helps drive this project forward.
-
-## 💰 Support
-
-This project incurs costs for hosting and compute. If you find it useful, please consider supporting the development.
 
 ## 📞 Contact
 
