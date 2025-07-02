@@ -1,34 +1,75 @@
-# Unity AI Livestream URP
+# 🏫 LLM-Classroom: AI-Powered Virtual Classroom 🎬
 
-## Introduction
-`unity-ai_livestream_URP` is an integral part of a cutting-edge project creating a virtual classroom environment for educational livestreams. This Unity project features engaging characters like Richard Feynman, Alan Watts, and a student named Alice, set in a dynamic classroom with a blackboard for displaying educational content.
+Welcome to **LLM-Classroom**! This innovative project combines local large language models with Unity-rendered virtual environments to create engaging educational experiences featuring animated characters in a dynamic classroom setting.
 
-## Key Features
-- **Interactive 3D Classroom**: A visually appealing educational space.
-- **Virtual Characters**: Characters engage in discussions, making learning fun and interactive.
-- **Dynamic Blackboard**: Displays generated diagrams, captions, and web-scraped images, enriching the educational experience.
+## ✨ What It Does
 
-## YouTube Livestream
-[Experience this project live!](https://www.youtube.com/@SteffenProbst-qt5wq/streams) If the livestream is offline, you can explore [my channel](https://www.youtube.com/@SteffenProbst-qt5wq/streams) for previous livestreams saved as videos, showcasing the capabilities and potential of the project.
+**Backend (Python)**: Uses local LLMs (Ollama) to generate synthetic classroom discussions, educational episodes, and interactive content. Features a REST API for seamless content distribution and live chat integration.
 
-## Getting Started
-1. Clone the repository.
-2. Open the project in Unity.
-3. Explore the scenes and assets provided to understand the setup.
-4. Run the project to view the current implementation.
+**Frontend (Unity)**: A beautiful 3D virtual classroom environment where characters like Richard Feynman, Alan Watts, and student Alice engage in discussions, with dynamic blackboards displaying generated content and web-scraped images.
 
-## Requirements
-- Unity (Version specified or latest)
-- No additional requirements as all necessary assets are included.
+## 🎥 See It In Action
 
-## How to Contribute
-I welcome all forms of engagement, from GitHub stars to feedback and pull requests. Every interaction, question, or contribution is valuable and helps drive this project forward.
+[![Watch a classroom episode on YouTube](https://img.youtube.com/vi/0QkFQwB1p6A/0.jpg)](https://www.youtube.com/@SteffenProbst-qt5wq/streams)  
+👉 [Experience the project live on YouTube!](https://www.youtube.com/@SteffenProbst-qt5wq/streams)
 
-## Support and Donations
-This project incurs costs for livestream hosting and compute. If you find this project useful or interesting, please consider supporting it through donations.
+## 🚀 Quick Start
 
-## Contact
-For collaboration, questions, or feedback, reach out to me [here](https://github.com/Probst1nator).
+### Prerequisites
+- Python 3.11+
+- Unity 2022.3+ (URP)
+- Ollama (for local LLMs)
 
-## License
-Distributed under the GNU General Public License. See LICENSE.md for more information.
+### Backend Setup
+```bash
+cd backend\ \(python\)/
+pip install -r episode_generator_requirements.txt
+pip install -r rest_api_requirements.txt
+# Start Ollama: ollama serve
+# Pull models: ollama pull llama2 && ollama pull orca2
+```
+
+### Frontend Setup
+```bash
+cd frontend\ \(unity\)/
+# Open in Unity Editor
+# Press Play to explore the classroom
+```
+
+## 🏗️ Architecture
+
+- **Content Generation**: Python scripts create educational episodes using LLMs
+- **REST API**: Distributes content to Unity environment
+- **3D Rendering**: Unity displays characters, animations, and dynamic content
+- **Live Integration**: Web scraping and chat processing for audience interaction
+
+## 📁 Project Structure
+
+```
+LLM-Classroom/
+├── backend (python)/          # Python backend system
+│   ├── classes/              # Core data structures
+│   ├── interface/            # LLM and API interfaces  
+│   ├── scripts/              # Episode generation & REST API
+│   └── few_shot_examples/    # LLM training examples
+└── frontend (unity)/         # Unity frontend system
+    ├── Assets/               # Unity assets & scenes
+    ├── ProjectSettings/      # Unity configuration
+    └── Packages/             # Unity dependencies
+```
+
+## 🤝 Contributing
+
+I welcome all forms of engagement! From GitHub stars to feedback and pull requests - every interaction helps drive this project forward.
+
+## 💰 Support
+
+This project incurs costs for hosting and compute. If you find it useful, please consider supporting the development.
+
+## 📞 Contact
+
+For collaboration, questions, or feedback: [GitHub Profile](https://github.com/Probst1nator)
+
+## 📜 License
+
+GNU General Public License - see LICENSE file for details. 
