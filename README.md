@@ -12,7 +12,7 @@ Welcome to **LLM-Classroom**! This innovative project combines local large langu
 
 [![Watch a classroom episode on YouTube](https://i.ytimg.com/vi/zoQ3bQ3zipM/maxresdefault.jpg)](https://www.youtube.com/live/zoQ3bQ3zipM?si=qnBS8jE_P-GrGre9)
 
-This project was created at the start of 2024, back then opensource language models were still much more basic. Be aware that because of this the dialogues in the (aged) episode will reflect this.
+This project was created at the start of 2024, back then opensource language models were still much more basic. Be aware that because of this the dialogues in the episodes will reflect this.
 
 ## 🚀 Quick Start
 
