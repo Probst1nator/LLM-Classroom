@@ -69,4 +69,4 @@ For collaboration, questions, or feedback: [GitHub Profile](https://github.com/P
 
 ## 📜 License
 
-GNU General Public License - see LICENSE file for details. 
+The MIT License - see LICENSE file for details. 
